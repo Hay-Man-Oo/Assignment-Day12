@@ -5,12 +5,14 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import Home from './components/Home';
 import Favourite from './components/Favourite';
 import Detail from './components/Detail';
-import RegistrationScreen from './components/Form';
+import Form from './components/registerForm';
+import Profile from './components/profile';
 
 const Drawer = createDrawerNavigator();
 function MyDrawer() {
@@ -22,6 +24,10 @@ function MyDrawer() {
       headerTitleStyle: {
       fontWeight: 'bold',
       },
+      headerRight: () => (
+        <EvilIcons name="user" color={'violet'} size={40}
+        onPress={() => navigation.navigate('Profile')} />
+      ),
     })}>
       
       <Drawer.Screen name="Home" component={Home}
@@ -44,11 +50,17 @@ function MyDrawer() {
         ),
         headerShown: false,
       }}/>
-      <Drawer.Screen name="Register" component={RegistrationScreen}
+      <Drawer.Screen name="Register" component={Form}
       options={{
         drawerIcon: ({ color, size }) => (
           <MaterialIcons name="app-registration" color={'violet'} size={30} />
         ),
+        }} />
+      <Drawer.Screen name="Profile" component={Profile}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <EvilIcons name="user" color={'violet'} size={30} />
+          ),
         }} />
     </Drawer.Navigator>
   );

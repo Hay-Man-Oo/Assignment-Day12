@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
-import { Text, View, TextInput, Button ,StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native';
-function Form() {
+import React, {useState ,useEffect} from 'react'
+import { Text, View, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+function Form( {navigation} : any) {
     const [email, setEmail] = useState("")
     const [name, setname] = useState("")
     const [phone, setphone] = useState("")
@@ -11,15 +13,28 @@ function Form() {
     const [phoneError, setphoneError] = useState("")
     const [passwordError, setPasswordError] = useState("")
     const [confirmpasswordError, setconfirmPasswordError] = useState("")
-    const handleSubmit = () => {
+    
+    
+    const validEmailRegex = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    
+    const handleSubmit = async () => {
         var nameValid = false;
         if(name.length == 0){
             setnameError("Enter Full Name");
         }        
-        else{
-            setnameError("")
-            nameValid = true
+        else {
+            try {
+                await AsyncStorage.setItem('FullName', name);
+                Alert(navigation.navigate('Profile'));
+            }
+            catch (nameError) {
+                console.log(nameError);
+                setnameError("")
+                nameValid = true
+            }
+            
         }
+
         var emailValid = false;
         if(email.length == 0){
             setEmailError("Email is required");
@@ -27,21 +42,39 @@ function Form() {
         else if(email.length < 6){
             setEmailError("Email should be minimum 6 characters");
         }      
-        else if(email.indexOf(' ') >= 0){        
-            setEmailError('Email cannot contain spaces');                          
+        else if (emailValid == validEmailRegex.test(String(email).toLocaleLowerCase())) { 
+            
+            setEmailError("Enter a Validate Email. (eg.example@gmail.com)"); 
         }    
-        else{
-            setEmailError("")
-            emailValid = true
+        else {
+            try {
+                await AsyncStorage.setItem('Email Address', email);
+            }
+            catch (emailError) {
+                console.log(emailError);
+                setEmailError("")
+                emailValid = true
+            }
+            
         }
+
         var phoneValid = false;
         if(phone.length == 0){
             setphoneError("Enter a phone number.");
         }        
-          
-        else{
-            setphoneError("")
-            phoneValid = true
+        else if (phone.length > 10 || phone.length < 10) {
+            setphoneError("Enter Only 10 Digit Number.");
+          }
+        else {
+            try {
+                await AsyncStorage.setItem('Phone', phone);
+            }
+            catch (phoneError) {
+                console.log(phoneError);
+                setphoneError("")
+                phoneValid = true
+            }
+            
         }     
         
     
@@ -49,18 +82,27 @@ function Form() {
         if(password.length == 0){
             setPasswordError("Password is required");
         }        
-        else if(password.length < 6){
-            setPasswordError("Password should be minimum 6 characters");
+        else if(password.length < 8){
+            setPasswordError("Password should be minimum 8 characters");
         }      
         else if(password.indexOf(' ') >= 0){        
             setPasswordError('Password cannot contain spaces');                          
         }    
-        else{
-            setPasswordError("")
-            passwordValid = true
+        else {
+            try {
+                await AsyncStorage.setItem('Password', password);
+            }
+            catch (passwordError) {
+                console.log(passwordError);
+                setPasswordError("")
+                passwordValid = true
+            }
+            
         }     
+
         console.log(confirmpassword)
         console.log(password)
+
         var confirmpasswordValid = false;
         if (confirmpassword.length == 0) {
             setconfirmPasswordError("Enter Password Confirmation.");
@@ -73,18 +115,31 @@ function Form() {
         }
        
         else {
-            setconfirmPasswordError ("")
-            confirmpasswordValid = true
-            }     
+            try {
+                await AsyncStorage.setItem('Confirm password', confirmpassword);
+            }
+            catch (confirmpasswordError) {
+
+                console.log(confirmpasswordError);
+                setconfirmPasswordError ("")
+                confirmpasswordValid = true
+            }
+            
+        }
       }
     return (
-        <View style={styles.form}>
+        <ScrollView>
+            <View style={styles.form}>
         <View style={styles.container}>
             <Text style={{textAlign:"center",fontSize:30,color:"#000",fontWeight:"bold",paddingBottom:40}}>Registration Form</Text>
             <View>
             <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Full Name</Text>
-                    <TextInput style={styles.input}  placeholder="Full Name" onChangeText={text => setname(text)} value={name} />
+                        <TextInput style={styles.input}
+                            placeholder="Full Name"
+                            onChangeText={text => setname(text)}
+                            value={name}
+                        />
                 </View>
 
                 {nameError.length > 0 &&
@@ -92,7 +147,11 @@ function Form() {
                 }
                 <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Email Address</Text>
-                    <TextInput style={styles.input}  placeholder="Enter Email" onChangeText={text => setEmail(text)} value={email} />
+                        <TextInput style={styles.input}
+                            placeholder="Enter Email"
+                            onChangeText={text => setEmail(text)}
+                            value={email}
+                        />
                 </View>
 
                 {emailError.length > 0 &&
@@ -100,15 +159,25 @@ function Form() {
                 }
                 <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Phone(enter only 10 digit number)</Text>
-                    <TextInput style={styles.input}  placeholder="Phone Number"  keyboardType="numeric" onChangeText={text => setphone(text)} value={phone} />
+                        <TextInput style={styles.input}
+                            placeholder="Phone Number"
+                            keyboardType="numeric"
+                            onChangeText={text => setphone(text)}
+                            value={phone}
+                        />
                 </View>
                 {phoneError.length > 0 &&
             
-            <Text style={{color:"red"}}>{phoneError}</Text>
-          }
+                    <Text style={{color:"red"}}>{phoneError}</Text>
+                }
                 <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Passoword</Text>
-                    <TextInput style={styles.input} placeholder="Enter Password" secureTextEntry={true} onChangeText={text => setPassword(text)} value={password} />
+                        <TextInput style={styles.input}
+                            placeholder="Enter Password"
+                            secureTextEntry={true}
+                            onChangeText={text => setPassword(text)}
+                            value={password}
+                        />
                 </View>
                 {passwordError.length > 0 &&
             
@@ -136,6 +205,7 @@ function Form() {
             
             </View>
             </View>
+        </ScrollView>
     )
 }
 export default Form;
@@ -144,9 +214,10 @@ const styles = StyleSheet.create({
         flex:1,
     },
     container: {
-        flex: 1,  
-        paddingTop: 60,
-       
+        flex: 1,
+        padding: 16,
+        paddingBottom: 100,
+        
     },
     input: {
         padding: 10,
@@ -164,7 +235,7 @@ const styles = StyleSheet.create({
         //marginLeft:"25%",
         padding: 10,
         backgroundColor:"#0000ff",
-      borderRadius: 10,
+        borderRadius: 10,
         marginTop: 10,
     }
   });

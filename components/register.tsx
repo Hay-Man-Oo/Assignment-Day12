@@ -51,7 +51,8 @@ class Registeration extends React.Component<{},any> {
 
     if (!this.state.confirmPassword) {
       this.setState({confirmPasswordError: 'Enter password confirmation'})
-    } else if (this.state.confirmPassword !== this.state.password) {
+    }
+    else if (this.state.confirmPassword !== this.state.password) {
       this.setState({confirmPasswordError: 'Your password is not equal!'})
     }
     else {
