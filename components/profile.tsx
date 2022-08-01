@@ -92,7 +92,7 @@ export default function Profile( { navigation, route }: any ) {
         {phone}{"\n"}{"\n"}
         {password}{"\n"}{"\n"}
         {confirmpassword}
-    </Text>
+      </Text>
     </View>
   );
 }

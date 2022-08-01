@@ -13,6 +13,7 @@ import Favourite from './components/Favourite';
 import Detail from './components/Detail';
 import Form from './components/registerForm';
 import Profile from './components/profile';
+import Users from './components/Api/apiGetMethod';
 
 const Drawer = createDrawerNavigator();
 function MyDrawer() {
@@ -43,13 +44,13 @@ function MyDrawer() {
           <MaterialCommunityIcons name="star-outline" color={'violet'} size={30} />
         ),
         }} />
-      <Drawer.Screen name="Detail" component={Detail}
+      {/*<Drawer.Screen name="Detail" component={Detail}
       options={{
         drawerIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="account-details" color={'violet'} size={30} />
         ),
         headerShown: false,
-      }}/>
+      }}/>*/}
       <Drawer.Screen name="Register" component={Form}
       options={{
         drawerIcon: ({ color, size }) => (
@@ -57,6 +58,12 @@ function MyDrawer() {
         ),
         }} />
       <Drawer.Screen name="Profile" component={Profile}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <EvilIcons name="user" color={'violet'} size={30} />
+          ),
+        }} />
+      <Drawer.Screen name="Users" component={Users}
         options={{
           drawerIcon: ({ color, size }) => (
             <EvilIcons name="user" color={'violet'} size={30} />
