@@ -4,16 +4,16 @@ import { Text, View } from "react-native";
 
 export default function Profile( { navigation, route }: any ) {
   
-    const [email, setEmail] = useState("")
-    const [name, setname] = useState("")
-    const [phone, setphone] = useState("")
-    const [password, setPassword] = useState("")
-    const[confirmpassword,setconfirmpassword]=useState("")
-    const [emailError, setEmailError] = useState("")
-    const [nameError, setnameError] = useState("")
-    const [phoneError, setphoneError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
-    const [confirmpasswordError, setconfirmPasswordError] = useState("")
+  const [email, setEmail] = useState("")
+  const [fullname, setFullName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [password, setPassword] = useState("")
+  const[confirmpassword,setConfirmPassword]=useState("")
+  const [emailError, setEmailError] = useState("")
+  const [fullnameError, setFullNameError] = useState("")
+  const [phoneError, setPhoneError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [confirmpasswordError, setConfirmPasswordError] = useState("")
 
   useEffect(() => {
     getData();
@@ -24,13 +24,13 @@ export default function Profile( { navigation, route }: any ) {
       AsyncStorage.getItem('FullName')
         .then(value => {
           if (value != null) {
-            setname(value);
+            setFullName(value);
           }
         }
         
       )
-    } catch (nameError) {
-      console.log(nameError);
+    } catch (fullnameError) {
+      console.log(fullnameError);
     }
     try {
       AsyncStorage.getItem('Email Address')
@@ -48,7 +48,7 @@ export default function Profile( { navigation, route }: any ) {
       AsyncStorage.getItem('Phone')
         .then(value => {
           if (value != null) {
-            setphone(value);
+            setPhone(value);
           }
         }
         
@@ -72,7 +72,7 @@ export default function Profile( { navigation, route }: any ) {
       AsyncStorage.getItem('Confirm password')
         .then(value => {
           if (value != null) {
-            setconfirmpassword(value);
+            setConfirmPassword(value);
           }
         }
         
@@ -87,7 +87,7 @@ export default function Profile( { navigation, route }: any ) {
       {/*<Button onPress={() => navigation.goBack()} title="Go Back To Home" />*/}
       <Text style={{fontSize: 20}}>
         User Info{"\n"}{"\n"}
-        {name}{"\n"}{"\n"}
+        {fullname}{"\n"}{"\n"}
         {email}{"\n"}{"\n"}
         {phone}{"\n"}{"\n"}
         {password}{"\n"}{"\n"}

@@ -4,32 +4,32 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Form( {navigation} : any) {
     const [email, setEmail] = useState("")
-    const [name, setname] = useState("")
-    const [phone, setphone] = useState("")
+    const [fullname, setFullName] = useState("")
+    const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-    const[confirmpassword,setconfirmpassword]=useState("")
+    const[confirmpassword,setConfirmPassword]=useState("")
     const [emailError, setEmailError] = useState("")
-    const [nameError, setnameError] = useState("")
-    const [phoneError, setphoneError] = useState("")
+    const [nameError, setFullNameError] = useState("")
+    const [phoneError, setPhoneError] = useState("")
     const [passwordError, setPasswordError] = useState("")
-    const [confirmpasswordError, setconfirmPasswordError] = useState("")
+    const [confirmpasswordError, setConfirmPasswordError] = useState("")
     
     
     const validEmailRegex = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
     
     const handleSubmit = async () => {
         var nameValid = false;
-        if(name.length == 0){
-            setnameError("Enter Full Name");
+        if(fullname.length == 0){
+            setFullNameError("Enter Full Name");
         }        
         else {
             try {
-                await AsyncStorage.setItem('FullName', name);
+                await AsyncStorage.setItem('FullName', fullname);
                 Alert(navigation.navigate('Profile'));
             }
             catch (nameError) {
                 console.log(nameError);
-                setnameError("")
+                setFullNameError("")
                 nameValid = true
             }
             
@@ -60,10 +60,10 @@ function Form( {navigation} : any) {
 
         var phoneValid = false;
         if(phone.length == 0){
-            setphoneError("Enter a phone number.");
+            setPhoneError("Enter a phone number.");
         }        
         else if (phone.length > 10 || phone.length < 10) {
-            setphoneError("Enter Only 10 Digit Number.");
+            setPhoneError("Enter Only 10 Digit Number.");
           }
         else {
             try {
@@ -71,7 +71,7 @@ function Form( {navigation} : any) {
             }
             catch (phoneError) {
                 console.log(phoneError);
-                setphoneError("")
+                setPhoneError("")
                 phoneValid = true
             }
             
@@ -105,13 +105,13 @@ function Form( {navigation} : any) {
 
         var confirmpasswordValid = false;
         if (confirmpassword.length == 0) {
-            setconfirmPasswordError("Enter Password Confirmation.");
+            setConfirmPasswordError("Enter Password Confirmation.");
         }
        
         
         else if (confirmpassword !== password) {
            
-        setconfirmPasswordError("Password and Confrim password should be the same!")
+        setConfirmPasswordError("Password and Confrim password should be the same!")
         }
        
         else {
@@ -121,7 +121,7 @@ function Form( {navigation} : any) {
             catch (confirmpasswordError) {
 
                 console.log(confirmpasswordError);
-                setconfirmPasswordError ("")
+                setConfirmPasswordError ("")
                 confirmpasswordValid = true
             }
             
@@ -137,8 +137,8 @@ function Form( {navigation} : any) {
                     <Text style={{paddingBottom:10,fontSize:18}}>Full Name</Text>
                         <TextInput style={styles.input}
                             placeholder="Full Name"
-                            onChangeText={text => setname(text)}
-                            value={name}
+                            onChangeText={text => setFullName(text)}
+                            value={fullname}
                         />
                 </View>
 
@@ -148,7 +148,7 @@ function Form( {navigation} : any) {
                 <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Email Address</Text>
                         <TextInput style={styles.input}
-                            placeholder="Enter Email"
+                            placeholder="Email Address"
                             onChangeText={text => setEmail(text)}
                             value={email}
                         />
@@ -162,7 +162,7 @@ function Form( {navigation} : any) {
                         <TextInput style={styles.input}
                             placeholder="Phone Number"
                             keyboardType="numeric"
-                            onChangeText={text => setphone(text)}
+                            onChangeText={text => setPhone(text)}
                             value={phone}
                         />
                 </View>
@@ -173,7 +173,7 @@ function Form( {navigation} : any) {
                 <View style={styles.textinput}>
                     <Text style={{paddingBottom:10,fontSize:18}}>Passoword</Text>
                         <TextInput style={styles.input}
-                            placeholder="Enter Password"
+                            placeholder="Password"
                             secureTextEntry={true}
                             onChangeText={text => setPassword(text)}
                             value={password}
@@ -188,7 +188,7 @@ function Form( {navigation} : any) {
                     <TextInput style={styles.input}
                       placeholder="Confirm Password"
                       secureTextEntry={true}
-                      onChangeText={text => setconfirmpassword(text)}
+                      onChangeText={text => setConfirmPassword(text)}
                       value={confirmpassword}
                     />
                 </View>
