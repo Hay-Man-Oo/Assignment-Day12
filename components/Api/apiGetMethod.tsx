@@ -31,15 +31,12 @@ export default function Users() {
                     <View key={i}>
                         <View style={styles.avatarView}>
                             <Image
-                        source={{ uri: item.avatar }}
-                        style={styles.avatar}
-                            />
+                                source={{ uri: item.avatar }}
+                                style={styles.avatar}
+                              />
                             <View style={styles.nameView}>
-                                <View style={{ flexDirection: "row",paddingTop:8 }}>
-                                    <Text style={{ fontSize: 20 }}>{item.first_name} </Text>
-                                    <Text style={{ fontSize: 20 }}>{item.last_name}</Text>
-                                </View>
-                                <Text>{item.email}</Text>
+                                    <Text style={{ fontSize: 20 }}>{item.first_name} {item.last_name} </Text>
+                                    <Text>{item.email}</Text>
                             </View>
                         </View>
                     </View>
@@ -75,6 +72,7 @@ const styles = StyleSheet.create({
   },
   nameView: {
     flexDirection: "column",
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingTop: 10,
   },
 })
